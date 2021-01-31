@@ -6,6 +6,7 @@ import com.example.demo.Model.User;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("ReservationDAO")
@@ -166,7 +167,65 @@ public class ReservationDAO implements IReservation {
     }
 
     @Override
-    public List<Reservation> getReservations(int id) {
-        return null;
+    public ArrayList<Reservation> getReservations(int id) {
+        ArrayList<Reservation> list = new ArrayList<>();
+
+
+
+        try
+                (
+                        Connection conn = DriverManager.getConnection(
+                                connString
+                        )) {
+            String query = "SELECT * FROM reservations JOIN flights ON reservations.flight_id = flights.flight_id JOIN users ON reservations.user_id = users.user_id WHERE user_id = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, id);
+
+            ResultSet result = stmt.executeQuery();
+            result.next();
+            if (result == null) {
+                return null;
+            }
+
+            while (result.next()) {
+                User user = new User(null,null,null,null,null,null, 0,null);
+                Flight flight = new Flight();
+                Reservation reservation = new Reservation();
+
+                user.setUser_id(result.getInt("user_id"));
+                user.setUsername(result.getString("username"));
+                user.setPassword(result.getString("password"));
+                user.setFirst_name(result.getString("first_name"));
+                user.setLast_name(result.getString("last_name"));
+                user.setDOB(result.getString("DOB"));
+                user.setAge(result.getInt("age"));
+                user.setNationality(result.getString("nationality"));
+                user.setGender(result.getString("gender"));
+
+                flight.setFlight_number(result.getInt("flight_number"));
+                flight.setDeparture_time(result.getString("departure_time"));
+                flight.setArrival_time(result.getString("arrival_time"));
+                flight.setDeparture_location(result.getString("arrival_location"));
+                flight.setArrival_location(result.getString("arrival_location"));
+                flight.setPrice(result.getFloat("flight_price"));
+
+                reservation.setCargo_weight(result.getInt("cargo_weight"));
+
+                reservation.setFlight(flight);
+                reservation.setUser(user);
+
+                list.add(reservation);
+            }
+
+
+        }
+
+
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
     }
 }

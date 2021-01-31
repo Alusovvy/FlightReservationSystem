@@ -6,6 +6,8 @@ import com.example.demo.Model.Reservation;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class ReservationService {
     private final ReservationDAO reservationDAO;
@@ -29,5 +31,9 @@ public class ReservationService {
 
     public Reservation getReservation(int id) {
         return reservationDAO.getReservation(id);
+    }
+
+    public ArrayList<Reservation> getReservations(int id) {
+        return reservationDAO.getReservations(id);
     }
 }

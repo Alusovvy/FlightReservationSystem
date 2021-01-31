@@ -10,7 +10,7 @@ public interface IFlight {
      boolean updateFlight(Flight flight);
      boolean deleteFlight(Flight flight);
      Flight getFlight(int id);
-     ArrayList<Flight> getFlights(String arrival_location, String departure_location, Date departure_time);
+     ArrayList<Flight> getFlights(String arrival_location, String departure_location, String departure_time);
      ArrayList<Flight> getFlights(String arrival_location, String departure_location);
      ArrayList<Flight> getFlights();
 }

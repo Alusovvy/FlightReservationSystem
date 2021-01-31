@@ -116,7 +116,7 @@ public class FlightDAO implements IFlight {
                     flight.setFlight_number(result.getInt("flight_number"));
                     flight.setDeparture_time(result.getString("departure_time"));
                     flight.setArrival_time(result.getString("arrival_time"));
-                    flight.setDeparture_location(result.getString("arrival_location"));
+                    flight.setDeparture_location(result.getString("departure_location"));
                     flight.setArrival_location(result.getString("arrival_location"));
                     flight.setPrice(result.getFloat("flight_price"));
                     flight.setFlight_id(id);
@@ -131,17 +131,116 @@ public class FlightDAO implements IFlight {
     }
 
     @Override
-    public ArrayList<Flight> getFlights(String arrival_location, String departure_location, Date departure_time) {
-        return null;
+    public ArrayList<Flight> getFlights(String arrival_location, String departure_location, String departure_time) {
+        ArrayList<Flight> list = new ArrayList<>();
+        try (
+                Connection conn = DriverManager.getConnection(
+                        conStr.connStr
+                )) {
+
+            Flight flight = new Flight();
+
+            String query = "SELECT * FROM flights WHERE arrival_location LIKE ? AND departure_location LIKE ? AND departure_time >= ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, arrival_location);
+            stmt.setString(2, departure_location);
+            stmt.setString(3, departure_time);
+
+            ResultSet result = stmt.executeQuery();
+
+            while(result.next()) {
+                flight.setFlight_number(result.getInt("flight_number"));
+                flight.setDeparture_time(result.getString("departure_time"));
+                flight.setArrival_time(result.getString("arrival_time"));
+                flight.setDeparture_location(result.getString("departure_location"));
+                flight.setArrival_location(result.getString("arrival_location"));
+                flight.setPrice(result.getFloat("flight_price"));
+                flight.setFlight_id(result.getInt("flight_id"));
+
+                list.add(flight);
+            }
+
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
     }
 
     @Override
     public ArrayList<Flight> getFlights(String arrival_location, String departure_location) {
-        return null;
+        ArrayList<Flight> list = new ArrayList<>();
+        try (
+                Connection conn = DriverManager.getConnection(
+                        conStr.connStr
+                )) {
+
+            Flight flight = new Flight();
+
+            String query = "SELECT * FROM flights WHERE arrival_location LIKE ? AND departure_location LIKE ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, arrival_location);
+            stmt.setString(2, departure_location);
+
+            ResultSet result = stmt.executeQuery();
+
+            while(result.next()) {
+                flight.setFlight_number(result.getInt("flight_number"));
+                flight.setDeparture_time(result.getString("departure_time"));
+                flight.setArrival_time(result.getString("arrival_time"));
+                flight.setDeparture_location(result.getString("departure_location"));
+                flight.setArrival_location(result.getString("arrival_location"));
+                flight.setPrice(result.getFloat("flight_price"));
+                flight.setFlight_id(result.getInt("flight_id"));
+
+                list.add(flight);
+            }
+
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
     }
 
     @Override
     public ArrayList<Flight> getFlights() {
-        return null;
+        ArrayList<Flight> list = new ArrayList<>();
+        try (
+                Connection conn = DriverManager.getConnection(
+                        conStr.connStr
+                )) {
+
+            Flight flight = new Flight();
+
+            String query = "SELECT * FROM flights";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+
+            ResultSet result = stmt.executeQuery();
+
+            while(result.next()) {
+                flight.setFlight_number(result.getInt("flight_number"));
+                flight.setDeparture_time(result.getString("departure_time"));
+                flight.setArrival_time(result.getString("arrival_time"));
+                flight.setDeparture_location(result.getString("departure_location"));
+                flight.setArrival_location(result.getString("arrival_location"));
+                flight.setPrice(result.getFloat("flight_price"));
+                flight.setFlight_id(result.getInt("flight_id"));
+
+                list.add(flight);
+            }
+
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
     }
 }

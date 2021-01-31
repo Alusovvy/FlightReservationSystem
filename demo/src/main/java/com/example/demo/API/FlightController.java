@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RequestMapping("api/v1/flight")
 @RestController
 public class FlightController {
@@ -73,5 +75,34 @@ public class FlightController {
         }
 
         return ResponseEntity.ok(flightRec);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all1")
+    public ResponseEntity getFlights(@RequestBody Flight flight) {
+        if (flight == null) {
+            return ResponseEntity.status(400).body("no infomration provided");
+        }
+
+        ArrayList<Flight> flights = flightService.getFlights(flight.getArrival_location(), flight.getDeparture_location(), flight.getDeparture_time());
+
+        return ResponseEntity.ok(flights);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all2")
+    public ResponseEntity getFlights2(@RequestBody Flight flight) {
+        if (flight == null) {
+            return ResponseEntity.status(400).body("no infomration provided");
+        }
+
+        ArrayList<Flight> flights = flightService.getFlights(flight.getArrival_location(), flight.getDeparture_location());
+
+        return ResponseEntity.ok(flights);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all3")
+    public ResponseEntity getFlights() {
+        ArrayList<Flight> flights = flightService.getFlights();
+
+        return ResponseEntity.ok(flights);
     }
 }
