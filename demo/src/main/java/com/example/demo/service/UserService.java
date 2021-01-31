@@ -24,18 +24,19 @@ public class UserService {
     }
 
     public boolean updateUser(User user) {
-        return false;
+        return userDAO.updateUser(user);
     }
 
     public boolean deleteUser(int id) {
-        return false;
+        return userDAO.deleteUser(id);
     }
 
-    public User getUser(User user) {
-        return null;
+    public User getUser(int id) {
+        return userDAO.getUser(id);
     }
 
     public ArrayList<User> getUsers() {
-        return null;
+
+        return userDAO.getUsers();
     }
 }
